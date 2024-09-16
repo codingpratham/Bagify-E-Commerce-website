@@ -3,18 +3,14 @@ import Button from '../component/Button'
 import InputBox from '../component/InputBox'
 import Heading from '../component/Heading'
 import {useNavigate} from 'react-router-dom'
+import Warning from '../component/Warning'
 import axios from 'axios'
 const Signup = () => {
 
-    const [user,setUser]=useState([])
-
     const [fullname,setFullname]=useState("")
     const [email,setEmail]=useState("")
-
     const [password,setPassword]=useState("")
-
     const [loading,setLoading]=useState(false)
-
     const navigate=useNavigate()
     
     const handleSubmit = async (e) => {
@@ -27,11 +23,9 @@ const Signup = () => {
             email,
             password
           });
-    
-         
           localStorage.setItem('token', res.data.token);
           navigate('/');
-          setLoading(false); // 
+          setLoading(false); 
         } catch (error) {
           console.error('Error signing up:', error);
           setLoading(false); 
@@ -85,6 +79,7 @@ const Signup = () => {
             
             onClick={handleSubmit}
           />
+          <Warning label={"Already have an account" }navigate={"signin"} />
         </div>
       </form>
     </div>

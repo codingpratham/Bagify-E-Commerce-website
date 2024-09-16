@@ -48,30 +48,31 @@ const LoginBody=zod.object({
     password:zod.string().min(8)
 })
 
-router.post('/login',async(req,res)=>{
-    const {success}=LoginBody.safeParse(req.body)
+router.post('/signin', async (req, res) => {
+    // Validate the request body using Zod
+    const { success, error } = LoginBody.safeParse(req.body);
 
-    if(!success){
-        return res.status(400).json({error:LoginBody.errors})
+    if (!success) {
+        return res.status(400).json({ error });
     }
 
-    const loggedUser= await User.findOne({
-        email:req.body.email,
-        password:req.body.password
-    })
+    // Find user by email and password
+    const loggedUser = await User.findOne({
+        email: req.body.email,
+        password: req.body.password,
+    });
 
-    if(loggedUser){
-        const token=jwt.sign({userId:
-            loggedUser._id},jwt_passcode)
-
-            res.json({
-                msg:"Successfully logged in",
-                token:token
-            })
+    // If user is found, create a token and return it
+    if (loggedUser) {
+        const token = jwt.sign({ userId: loggedUser._id }, jwt_passcode);
+        return res.json({
+            msg: 'Successfully logged in',
+            token: token,
+        });
     }
 
-    return res.status(401).json({error:'Invalid email or password'})
-})
+    // If login credentials are incorrect, return 401
+    return res.status(401).json({ error: 'Invalid email or password' });
+});
 
-
-module.exports =router
+module.exports=router
