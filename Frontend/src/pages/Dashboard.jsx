@@ -1,21 +1,28 @@
 import React, { useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
-import { auth } from '../store/atom';
+import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
+import NavBar from '../component/NavBar';
+import { auth } from '../store/atom';
 
 const Dashboard = () => {
-  const authstatus = useRecoilValue(auth);  
+  const [authStatus, setAuthStatus] = useRecoilState(auth);
+  const navigate = useNavigate();
 
-  if(!authstatus) {
-    return <>
-    <h1>
-      you need to log in to access this page
-    </h1>
-    </>
-  } 
-  
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      navigate('/signin');
+    } else if (!authStatus) {
+      setAuthStatus(true);
+    }
+  }, [authStatus, setAuthStatus, navigate]);
+
   return (
-    <div>Dashboard</div>
+    <div>
+      <NavBar label={"Shop."} />
+      
+    </div>
   );
 };
 

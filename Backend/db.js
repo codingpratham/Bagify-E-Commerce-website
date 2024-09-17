@@ -13,4 +13,23 @@ const userSchema=new mongoose.Schema({
 
 const User=mongoose.model('User',userSchema)
 
-module.exports={User}
+const AdminSchema=mongoose.Schema({
+    email:String,
+    password:String
+})
+
+const Admin=mongoose.model('Admin',AdminSchema)
+
+const ProductSchema=mongoose.Schema({
+    productName:String,
+    productPrice:String,
+    discountPrice:String,
+    imageUrl:String
+})
+
+const Product=mongoose.model('Product',ProductSchema)
+
+
+
+
+module.exports={User,Admin,Product}

@@ -5,8 +5,10 @@ import Heading from '../component/Heading'
 import {useNavigate} from 'react-router-dom'
 import Warning from '../component/Warning'
 import axios from 'axios'
+import { useRecoilState } from 'recoil'
+import { auth } from '../store/atom'
 const Signup = () => {
-
+    const [authStatus,setAuthStatus]=useRecoilState(auth)
     const [fullname,setFullname]=useState("")
     const [email,setEmail]=useState("")
     const [password,setPassword]=useState("")
@@ -26,6 +28,7 @@ const Signup = () => {
           localStorage.setItem('token', res.data.token);
           navigate('/');
           setLoading(false); 
+          setAuthStatus(true);
         } catch (error) {
           console.error('Error signing up:', error);
           setLoading(false); 

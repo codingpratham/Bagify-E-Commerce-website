@@ -1,7 +1,7 @@
 const express= require('express')
 const zod=require('zod')
 const jwt= require('jsonwebtoken')
-const { User } = require('../db')
+const { User ,Admin} = require('../db')
 const jwt_passcode=require('../passcode')
 const router=express.Router()
 
@@ -26,12 +26,16 @@ router.post('/signup',async(req,res)=>{
         return res.status(411).json({error:'Email already exists'})
     }
 
+    
     const user= await User.create({
         fullname:req.body.fullname,
         email:req.body.email,
         password:req.body.password
     })
-    
+    const admin= await Admin.create({
+        userId:user._id,
+        email:req.body.email
+    })
     const userId=user._id
 
     const token=jwt.sign({userId},jwt_passcode)
