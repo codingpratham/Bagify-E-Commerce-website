@@ -1,11 +1,21 @@
 import React, { useState } from 'react';
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 const NavBar = ({label}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+
+  const navigate=useNavigate()
+
+  const [logout,setLogout]=useState(true);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setLogout(false);
+    navigate('/signin')
+  }
 
   return (
     <nav className="bg-white border-b shadow-sm">
@@ -69,6 +79,9 @@ const NavBar = ({label}) => {
             >
               My Account
             </a>
+              <button className='text-gray-600' onClick={handleLogout}>
+                logout
+              </button>
           </div>
         </div>
 
@@ -93,8 +106,13 @@ const NavBar = ({label}) => {
               >
                 My Account
               </a>
+              <button className='text-gray-600' onClick={handleLogout}>
+                logout
+              </button>
+              
             </div>
           </div>
+          
         )}
       </div>
     </nav>

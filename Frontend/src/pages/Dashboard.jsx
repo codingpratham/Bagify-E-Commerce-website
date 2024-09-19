@@ -21,7 +21,6 @@ const Dashboard = () => {
   return (
     <div>
       <NavBar label={"Shop."} />
-      
     </div>
   );
 };
