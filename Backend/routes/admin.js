@@ -55,4 +55,30 @@ router.post('/addProduct', (req, res) => {
     });
 });
 
+router.get('/product', async(req,res)=>{
+
+    const filter = req.query.filter
+
+
+    
+    try {
+        const products = await Product.find({});
+
+        return res.status(200).json(
+            products.map((product)=>{
+                return {
+                    id: product.id,
+                    productName: product.productName,
+                    productPrice: product.productPrice,
+                    imageUrl: product.imageUrl,
+                    discountPrice: product.discountPrice
+                };
+            })
+        );
+
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+})
+
 module.exports = router;
