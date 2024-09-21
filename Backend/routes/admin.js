@@ -55,19 +55,14 @@ router.post('/addProduct', (req, res) => {
     });
 });
 
-router.get('/product', async(req,res)=>{
-
-    const filter = req.query.filter
-
-
-    
+router.get('/product', async (req, res) => {
     try {
-        const products = await Product.find({});
+        const products = await Product.find({}); // Fetch all products
 
         return res.status(200).json(
-            products.map((product)=>{
+            products.map((product) => {
                 return {
-                    id: product.id,
+                    id: product._id, // Changed to product._id, assuming MongoDB ObjectId
                     productName: product.productName,
                     productPrice: product.productPrice,
                     imageUrl: product.imageUrl,
@@ -75,10 +70,9 @@ router.get('/product', async(req,res)=>{
                 };
             })
         );
-
     } catch (error) {
         return res.status(500).json({ error: error.message });
     }
-})
+});
 
 module.exports = router;

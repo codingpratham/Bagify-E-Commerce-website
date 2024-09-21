@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ProductCard from '../component/ProductCard';
-
+import NavBar from '../component/NavBar';
 const Product = () => {
 
   const [products, setProducts] = useState([]);
@@ -11,8 +11,11 @@ const Product = () => {
     axios
       .get('http://localhost:3000/api/v1/admin/product')
       .then((res) => {
-        setProducts(res.data.products || []);
-        setLoading(false); // Set loading to false after fetching data
+        console.log(res.data);
+        
+        
+        setProducts(res.data || []);
+        setLoading(false); 
       })
       .catch((error) => {
         console.error("Error fetching the products:", error);
@@ -25,20 +28,24 @@ const Product = () => {
   }
 
   return (
+    <>
+      <NavBar label={"Products"}/>
     <div>
       {products.length > 0 ? (
         products.map((product) => (
           <ProductCard
-            key={product._id}
-            imageurl={product.imageUrl}
-            productName={product.productName}
-            productPrice={product.productPrice}
+          key={product._id}
+          imageurl={product.imageUrl}
+          productName={product.productName}
+          productPrice={product.productPrice}
           />
+          
         ))
       ) : (
-        <div>No products found.</div>  // Show message if no products
+        <div>No products found.</div> 
       )}
     </div>
+      </>
   );
 };
 
